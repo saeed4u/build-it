@@ -1,0 +1,26 @@
+version: '3'
+services:
+  main:
+    image: build-it-backend
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    container_name: build-it-backend
+    ports:
+      - 9003:9003
+    depends_on:
+      - db
+  db:
+    image: mysql:5.7
+    container_name: buildit-db
+    command: mysqld --sql-mode='' --port=3307
+    ports:
+      - 3308:3308
+    environment:
+      MYSQL_ROOT_PASSWORD: localhostrootpwd
+      MYSQL_DATABASE: buildit
+      MYSQL_USER: buildit
+      MYSQL_PASSWORD: buildit
+    volumes:
+      - ./docker/mysql.conf.d:/etc/mysql/conf.d
+      - ./docker/data:/docker-entrypoint-initdb.d
